@@ -1,21 +1,46 @@
-# skrá til þess að halda um spilara. t.d hver á að spila. hvað gerðist.
-# þetta mun vera skrá sem keyrir alltaf meðan serverin er í gangi.
-# serverinn er rasberry pi 4 4gb með 32gb minni. er ekki vis ef þetta er B eða hvað varan
-
 import datetime
 from uno import *
-from class import Card
+import paho.mqtt.client as mqtt
 
+# paho code necessary for MQTT communication.
+client = mqtt.Client(userdata={})
+client.connect("localhost", 1883)
+client.subscribe("player1_deck")
+client.subscribe("player2_deck")
+client.subscribe("player1_played")
+client.subscribe("player2_played")
+
+player1_deck = 5
+player2_deck = 5
+
+def on_message_player1(client, userdata, message):
+    global player1_deck
+    if message.topic == "player1_deck":
+        player1_deck = int(message.payload.decode())
+    elif message.topic == "player1_played":
+        player1_deck -= 1
+
+def on_message_player2(client, userdata, message):
+    global player2_deck
+    if message.topic == "player2_deck":
+        player2_deck = int(message.payload.decode())
+    elif message.topic == "player2_played":
+        player2_deck -= 1
+
+client.on_message = on_message_player1  # Set initial message handler for player 1
+
+# Create client instances for each player and pass in their IDs as userdata.
+client1 = mqtt.Client(userdata="player1")
+client2 = mqtt.Client(userdata="player2")
+
+client1.connect("localhost", 1883)
+client2.connect("localhost", 1883)
 
 run = True
-while run:
-    firstcard = firstcard1
-    player1 = 5
-    player2 = 5
-    while player1 != 0 and player2 != 0:
-    #compares the cards
-    #if card is the same color or number it passes sprite
-    #if it isnt it returns x
-    #display sprite to player
-    
 
+while run:
+    # Check if a message for player 1 or player 2 has been received and update the appropriate deck
+    if client1.check_msg():
+        client.on_message = on_message_player1
+    elif client2.check_msg():
+        client.on_message = on_message_player2
