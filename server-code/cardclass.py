@@ -1,4 +1,4 @@
-class Card:
+class UnoCard:
     def __init__(self, color, number):
         self.color = color
         self.number = number
