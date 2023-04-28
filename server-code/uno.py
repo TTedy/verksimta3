@@ -51,7 +51,7 @@ computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredenti
 
 
 #OCR: Read File using the Read API, extract text - remote
-read_image_url = "https://cdn.discordapp.com/attachments/1019581625832575007/1101492175189069865/tile026.png"
+read_image_url = "https://cdn.discordapp.com/attachments/1019581625832575007/1101492175189069865/tile026.png" #has to be changed to get from camera
 read_response = computervision_client.read(read_image_url,  raw=True)
 read_operation_location = read_response.headers["Operation-Location"]
 operation_id = read_operation_location.split("/")[-1]
@@ -79,4 +79,4 @@ color1 = hextorgb((color_results.color.accent_color)) #gets color
 closestcolor = closest(list_of_colors,color1) #finds closest color
 colortrue = findcolor(closestcolor)
 #adds color to card list
-print(numbercard[0] + colortrue)
+firstcard1 = numbercard[0] + colortrue
