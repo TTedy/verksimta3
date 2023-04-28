@@ -4,7 +4,6 @@
 
 import datetime
 from uno import *
-
 print(datetime)
 
 run = True
@@ -16,4 +15,6 @@ while run:
     #compares the cards
     #if card is the same color or number it passes sprite
     #if it isnt it returns x
-        
+    #display sprite to player
+    
+

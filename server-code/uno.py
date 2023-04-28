@@ -12,6 +12,7 @@ from PIL import Image
 import sys
 import time
 import numpy as np
+import sys
 
 
 #converts hex to rgb
@@ -45,9 +46,11 @@ def findcolor(lol):
 list_of_colors = [[202,1,2],[255,255,0],[0,128,0],[45,88,250]]
 
 #authenticate
+subscription_key = "f101eb2dc5434e0ba374938409ee4bef"
+endpoint = "https://computervisionapi12123.cognitiveservices.azure.com/"
+computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
 
-
-
+print(os.environ.get("azuresubscription"))
 #OCR: Read File using the Read API, extract text - remote
 read_image_url = "https://cdn.discordapp.com/attachments/1100417862994239641/1101508531372437624/image.png" #has to be changed to get from camera
 read_response = computervision_client.read(read_image_url,  raw=True)
