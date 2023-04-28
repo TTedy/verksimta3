@@ -45,13 +45,11 @@ def findcolor(lol):
 list_of_colors = [[202,1,2],[255,255,0],[0,128,0],[45,88,250]]
 
 #authenticate
-subscription_key = "f101eb2dc5434e0ba374938409ee4bef"
-endpoint = "https://computervisionapi12123.cognitiveservices.azure.com/"
-computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+
 
 
 #OCR: Read File using the Read API, extract text - remote
-read_image_url = "https://cdn.discordapp.com/attachments/1019581625832575007/1101492175189069865/tile026.png" #has to be changed to get from camera
+read_image_url = "https://cdn.discordapp.com/attachments/1100417862994239641/1101508531372437624/image.png" #has to be changed to get from camera
 read_response = computervision_client.read(read_image_url,  raw=True)
 read_operation_location = read_response.headers["Operation-Location"]
 operation_id = read_operation_location.split("/")[-1]
@@ -72,7 +70,7 @@ if read_result.status == OperationStatusCodes.succeeded: #if status is succeeded
     color_results = computervision_client.analyze_image(read_image_url, visual_features=[VisualFeatureTypes.color]) #gets color
     for text_result in read_result.analyze_result.read_results: #gets text
         for line in text_result.lines:
-            if line.text not in numbercard:
+            if line.text not in numbercard and line.text.isdigit():
                 numbercard.append(line.text) #adds text to card list
 
 color1 = hextorgb((color_results.color.accent_color)) #gets color
@@ -80,3 +78,4 @@ closestcolor = closest(list_of_colors,color1) #finds closest color
 colortrue = findcolor(closestcolor)
 #adds color to card list
 firstcard1 = numbercard[0] + colortrue
+print(firstcard1)
