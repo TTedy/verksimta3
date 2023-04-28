@@ -4,7 +4,8 @@
 
 import datetime
 from uno import *
-print(datetime)
+from class import Card
+
 
 run = True
 while run:

@@ -50,9 +50,8 @@ subscription_key = "f101eb2dc5434e0ba374938409ee4bef"
 endpoint = "https://computervisionapi12123.cognitiveservices.azure.com/"
 computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
 
-print(os.environ.get("azuresubscription"))
 #OCR: Read File using the Read API, extract text - remote
-read_image_url = "https://cdn.discordapp.com/attachments/1100417862994239641/1101508531372437624/image.png" #has to be changed to get from camera
+read_image_url = "https://cdn.discordapp.com/attachments/944379742885408778/1101648576792231977/IMG_9509.jpg" #has to be changed to get from camera
 read_response = computervision_client.read(read_image_url,  raw=True)
 read_operation_location = read_response.headers["Operation-Location"]
 operation_id = read_operation_location.split("/")[-1]
