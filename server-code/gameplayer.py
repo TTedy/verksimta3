@@ -54,6 +54,8 @@ while run:
 if player1_deck == 5:
     # runs main function to get first card and adds it to list
     firstcard1 = main(imagelink, list_of_colors)
+    #uses cardclass on card
+    firstcard1 = UnoCard(firstcard1[0], firstcard1[1])
     cards.append(firstcard1)
     #if only one card in cards pass turn to player 2
     if len(cards) == 1:
