@@ -3,7 +3,7 @@ from uno import *
 import paho.mqtt.client as mqtt
 from cardclass import UnoCard
 # paho code necessary for MQTT communication.
-imagelink = "https://cdn.discordapp.com/attachments/1100417862994239641/1101508531372437624/image.png"
+imagelink = "https://i.pinimg.com/236x/67/41/03/6741031cf4c5e06ff944d98f13131415.jpg"
 print(main(imagelink, list_of_colors))
 client = mqtt.Client(userdata={})
 client.connect("localhost", 1883)
@@ -52,8 +52,31 @@ while run:
 #need to add this code to work with mqtt since i dont undertsand it
 #add first card to list always from player 1
 if player1_deck == 5:
-    # gets the first card and uses uno.py to find the color and number
-    
+    # runs main function to get first card and adds it to list
+    firstcard1 = main(imagelink, list_of_colors)
+    cards.append(firstcard1)
+    #if only one card in cards pass turn to player 2
+    if len(cards) == 1:
+        client.publish("player2_turn", "True")
+        client.publish("player1_turn", "False")
+    #runs main function on player 2's card and adds it to list
+    elif len(cards) == 2:
+        firstcard2 = main(imagelink, list_of_colors)
+        cards.append(firstcard2)
+    #compares the two cards by color and number
+    if cards[0].color == cards[1].color or cards[0].number == cards[1].number: #need to add it to cardclass.py to work
+        #if they are the same pass turn to player 1
+        client.publish("player1_turn", "True")
+        client.publish("player2_turn", "False")
+    else:
+        #if they are not the same pass turn to player 2
+        client.publish("player2_turn", "True")
+        client.publish("player1_turn", "False")
+    #after 3rd card is added to list remove the first one
+    if len(cards) == 3:
+        cards.pop(0)
+
+
 
 
 """
