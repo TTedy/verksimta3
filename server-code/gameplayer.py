@@ -3,6 +3,8 @@ from uno import *
 import paho.mqtt.client as mqtt
 from cardclass import UnoCard
 # paho code necessary for MQTT communication.
+imagelink = "https://cdn.discordapp.com/attachments/1100417862994239641/1101508531372437624/image.png"
+print(main(imagelink, list_of_colors))
 client = mqtt.Client(userdata={})
 client.connect("localhost", 1883)
 client.subscribe("player1_deck")
@@ -12,7 +14,7 @@ client.subscribe("player2_played")
 
 player1_deck = 5
 player2_deck = 5
-
+cards = []
 def on_message_player1(client, userdata, message):
     global player1_deck
     if message.topic == "player1_deck":
@@ -44,3 +46,14 @@ while run:
         client.on_message = on_message_player1
     elif client2.check_msg():
         client.on_message = on_message_player2
+
+
+"""
+#need to add this code to work with mqtt since i dont undertsand it
+#add first card to list always from player 1
+if player1_deck == 5:
+    # gets the first card and uses uno.py to find the color and number
+    
+
+
+"""
