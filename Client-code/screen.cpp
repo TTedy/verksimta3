@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
   mosquitto_subscribe(mosq, NULL, "checkmark", 0);
 
   // Load the initial image
-  const char* image_path = "uno_cards/g3.png";
+  const char* image_path = "unocards/tile024.png";
   Matrix* image = matrix->CreateMatrixFromImage(image_path);
   if (image == nullptr) {
     matrix->Clear();
@@ -85,24 +85,18 @@ int main(int argc, char **argv) {
     matrix->SwapOnVSync();
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
-    // Check for new images
-    if (mosquitto_loop(mosq, 0, 1) != MOSQ_ERR_SUCCESS) {
-      break;
+  // Check for new images
+  if (mosquitto_loop(mosq, 0, 1) != MOSQ_ERR_SUCCESS) {
+    break;
+  }
+  const char* new_image_path = nullptr;
+  // code to update new_image_path based on the received MQTT message
+  if (new_image_path != nullptr) {
+    // Load the new image
+    Matrix* new_image = matrix->CreateMatrixFromImage(new_image_path);
+    if (new_image != nullptr) {
+      // Swap the new image with the old image
+      delete image;
+      image = new_image;
     }
-    const char* new_image_path = nullptr;
-    if (checked) {
-      new_image_path = "uno_cards/g5.png";
-    } else {
-      new_image_path = "uno_cards
-
-
-/* 
-g++ mqtt_led_matrix.cpp -o mqtt_led_matrix -lmosquitto -lrgbmatrix
-sudo ./mqtt_led_matrix
-
-sudo apt-get update
-sudo apt-get install libmosquitto-dev librgbmatrix-dev
-
-sudo ./rpi-rgb-led-matrix/examples-api-use/demo -D 1 --led-rows=16 --led-cols=32 --led-brightness=50 --led-scan-mode=0 --led-pixel-mapper="Rotate:90" /home/pi/image.png
-*/
-
+  }
